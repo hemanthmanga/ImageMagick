@@ -10,5 +10,11 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libtiff-dev libwebp-dev
+      - name: Check if test-tiff.cc exists
+        run: |
+          if [ ! -f test-tiff.cc ]; then
+            echo "test-tiff.cc not found"
+            exit 1
+          fi
       - run: g++ -o test-tiff test-tiff.cc `pkg-config --static --libs libtiff-4`
       - run: ldd test-tiff
