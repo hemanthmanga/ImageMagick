@@ -1,0 +1,14 @@
+name: Test tiff
+on:
+  push:
+jobs:
+  tiff:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libtiff-dev libwebp-dev
+      - run: g++ -o test-tiff test-tiff.cc `pkg-config --static --libs libtiff-4`
+      - run: ldd test-tiff
