@@ -1,0 +1,39 @@
+name: Compile and Check TIFF Program
+
+on:
+  push:
+    branches:
+      - Newlib
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create test-tiff.cc file
+        run: |
+          echo '#include <tiff.h>
+          #include <tiffio.h>
+
+          int main() {
+            thandle_t image;
+            TIFFClientOpen("", "rb", image, nullptr, nullptr, nullptr, nullptr, nullptr,
+                           nullptr, nullptr);
+            return 0;
+          }' > test-tiff.cc
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libtiff-dev pkg-config
+
+      - name: Compile the program
+        run: |
+          g++ -o test-tiff test-tiff.cc `pkg-config --static --libs libtiff-4`
+
+      - name: Check dependencies of libtiff
+        run: |
+          ldd /lib/x86_64-linux-gnu/libtiff.so.5
