@@ -17,7 +17,6 @@ jobs:
         run: |
           echo '#include <tiff.h>
           #include <tiffio.h>
-
           int main() {
             thandle_t image;
             TIFFClientOpen("", "rb", image, nullptr, nullptr, nullptr, nullptr, nullptr,
@@ -28,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libtiff-dev pkg-config
+          sudo apt-get install -y libtiff-dev libwebp-dev pkg-config
 
       - name: Compile the program
         run: |
